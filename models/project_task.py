@@ -940,64 +940,64 @@ class ProjectTask(models.Model):
 #             }]
 #         }
 #         return data
-    def _get_capacity_allocation_data(self, start_date, end_date, interval):
-        """
-        Get capacity allocation data for developers within the specified date range
-
-        Args:
-            start_date: datetime - Start date for data collection
-            end_date: datetime - End date for data collection
-            interval: str - Time interval ('day', 'week', or 'month')
-
-        Returns:
-            dict: Formatted data for capacity allocation chart
-        """
-        developers = self.env['res.users'].search([('share', '=', False)])
-
-        # Determine the number of intervals based on the selected period
-        if interval == 'day':
-            intervals = [(end_date - timedelta(days=i)).strftime('%Y-%m-%d')
-                         for i in range((end_date - start_date).days + 1)]
-        elif interval == 'week':
-            intervals = [(end_date - timedelta(weeks=i)).strftime('%Y-%W')
-                         for i in range(4)]
-        else:  # month
-            intervals = [(end_date - timedelta(days=30 * i)).strftime('%Y-%m')
-                         for i in range(12)]
-
-        data = {
-            'developers': [dev.name for dev in developers],
-            'weeks': intervals,
-            'data': []
-        }
-
-        for dev in developers:
-            dev_data = []
-            for i, interval_date in enumerate(intervals):
-                if interval == 'day':
-                    interval_start = datetime.strptime(interval_date, '%Y-%m-%d')
-                    interval_end = interval_start + timedelta(days=1)
-                elif interval == 'week':
-                    year, week = interval_date.split('-')
-                    interval_start = datetime.strptime(f'{year}-W{week}-1', '%Y-W%W-%w')
-                    interval_end = interval_start + timedelta(weeks=1)
-                else:  # month
-                    interval_start = datetime.strptime(interval_date, '%Y-%m')
-                    interval_end = (interval_start + timedelta(days=32)).replace(day=1)
-
-                tasks = self.search([
-                    ('user_ids', 'in', [dev.id]),
-                    ('task_start_date', '>=', interval_start),
-                    ('task_start_date', '<', interval_end),
-                    ('active', '=', True)
-                ])
-
-                hours = sum(tasks.mapped('actual_hours') or [0])
-                dev_data.append(round(hours, 2))
-
-            data['data'].append(dev_data)
-
-        return data
+#     def _get_capacity_allocation_data(self, start_date, end_date, interval):
+#         """
+#         Get capacity allocation data for developers within the specified date range
+#
+#         Args:
+#             start_date: datetime - Start date for data collection
+#             end_date: datetime - End date for data collection
+#             interval: str - Time interval ('day', 'week', or 'month')
+#
+#         Returns:
+#             dict: Formatted data for capacity allocation chart
+#         """
+#         developers = self.env['res.users'].search([('share', '=', False)])
+#
+#         # Determine the number of intervals based on the selected period
+#         if interval == 'day':
+#             intervals = [(end_date - timedelta(days=i)).strftime('%Y-%m-%d')
+#                          for i in range((end_date - start_date).days + 1)]
+#         elif interval == 'week':
+#             intervals = [(end_date - timedelta(weeks=i)).strftime('%Y-%W')
+#                          for i in range(4)]
+#         else:  # month
+#             intervals = [(end_date - timedelta(days=30 * i)).strftime('%Y-%m')
+#                          for i in range(12)]
+#
+#         data = {
+#             'developers': [dev.name for dev in developers],
+#             'weeks': intervals,
+#             'data': []
+#         }
+#
+#         for dev in developers:
+#             dev_data = []
+#             for i, interval_date in enumerate(intervals):
+#                 if interval == 'day':
+#                     interval_start = datetime.strptime(interval_date, '%Y-%m-%d')
+#                     interval_end = interval_start + timedelta(days=1)
+#                 elif interval == 'week':
+#                     year, week = interval_date.split('-')
+#                     interval_start = datetime.strptime(f'{year}-W{week}-1', '%Y-W%W-%w')
+#                     interval_end = interval_start + timedelta(weeks=1)
+#                 else:  # month
+#                     interval_start = datetime.strptime(interval_date, '%Y-%m')
+#                     interval_end = (interval_start + timedelta(days=32)).replace(day=1)
+#
+#                 tasks = self.search([
+#                     ('user_ids', 'in', [dev.id]),
+#                     ('task_start_date', '>=', interval_start),
+#                     ('task_start_date', '<', interval_end),
+#                     ('active', '=', True)
+#                 ])
+#
+#                 hours = sum(tasks.mapped('actual_hours') or [0])
+#                 dev_data.append(round(hours, 2))
+#
+#             data['data'].append(dev_data)
+#
+#         return data
 #
 #     def _get_project_progress_data(self):
 #         projects = self.env['project.project'].search([('active', '=', True)])
