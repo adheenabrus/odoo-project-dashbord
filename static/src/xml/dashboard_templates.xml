@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ProjectDashboard">
+<!--        <div class="project-dashboard container-fluid py-4">-->
+        <div class="container-fluid py-4">
+<!--            lass="row main-section"-->
+            <!-- Summary Cards Row -->
+             <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0 fw-semibold">Dashboard Analytics</h5>
+                                <div class="d-flex align-items-center">
+                                    <label for="start_date" class="me-2 fw-light text-muted">Start Date:</label>
+                                    <input type="date" id="start_date" name="start_date" class="form-control form-control-sm me-2" style="width: 150px;"/>
+
+                                    <label for="end_date" class="me-2 fw-light text-muted">End Date:</label>
+                                    <input type="date" id="end_date" name="end_date" class="form-control form-control-sm" style="width: 150px;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-sm-6 mb-4">
+                        <div class="card total-projects-card cursor-pointer" style="cursor: pointer;">
+                            <div class="card-body p-3">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Projects</p>
+                                            <h5 class="font-weight-bolder">
+                                                <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.total_projects : 0"/>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="icon icon-shape" style="background-color: #B3C100; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                            <i class="fa fa-tasks" aria-hidden="true" style="color: white;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6 mb-4">
+                        <div class="card">
+                            <div class="card-body p-3">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Active Tasks</p>
+                                            <h5 class="font-weight-bolder">
+                                                <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.active_tasks : 0"/>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="icon icon-shape" style="background-color: #6AB187; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                            <i class="fa fa-code" aria-hidden="true" style="color: white;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6 mb-4">
+                        <div class="card">
+                            <div class="card-body p-3">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Hours</p>
+                                            <h5 class="font-weight-bolder">
+                                                <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.total_hours : 0"/>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="icon icon-shape" style="background-color: #23282D; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                           <i class="fa fa-clock-o" aria-hidden="true" style="color: white;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6 mb-4">
+                        <div class="card">
+                            <div class="card-body p-3">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Developers</p>
+                                            <h5 class="font-weight-bolder">
+                                                <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.team_members : 0"/>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="icon icon-shape" style="background-color: #4CB5F5; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                            <i class="fa fa-users" aria-hidden="true" style="color: white;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0"> Developer Utilization</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="weeklyUtilizationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Project Progress</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="projectProgressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+
+                <div class="col-lg-6 mb-4">
+                       <div class="card h-100">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Task Type Distribution</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="taskDistributionChart"></canvas>
+                                </div>
+                       </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Developer Capacity vs Allocation</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="capacityAllocationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Task Completion vs Estimation</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="taskCompletionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Bug Resolution Time</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="bugResolutionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Timesheet Compliance</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="timesheetComplianceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-lg-6 mb-4">
+
+                     <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Task Overruns by Project</h6>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="small text-muted">Total Overrun Tasks</div>
+                                            <div class="h4 mb-0">
+                                                <t t-esc="widget.dashboardData.task_overruns.summary.total_overrun_tasks"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="small text-muted">Avg Overrun %</div>
+                                            <div class="h4 mb-0">
+                                                <t t-esc="widget.dashboardData.task_overruns.summary.avg_overrun_percentage"/>%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+<!--                                <canvas id="taskOverrunsByProjectChart"></canvas>-->
+                                      <div class="card-body">
+                                                <canvas  id="taskOverrunChart"></canvas>
+                                     </div>
+                            </div>
+                        </div>
+                 </div>
+
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Burn Rate</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="weeklyBurnRateChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h6 class="mb-0">Task Backlog</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="taskBacklogChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Projects Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Recent Projects</h6>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center font-weight-bold text-lg font-medium text-gray-500 uppercase">Project Name</th>
+                                            <th class="text-center text-md font-medium text-gray-500 uppercase">Progress</th>
+                                            <th class="text-center text-md font-medium text-gray-500 uppercase">Tasks</th>
+                                            <th class="text-center text-md font-medium text-gray-500 uppercase">Hours</th>
+                                            <th class="text-center ttext-md font-medium text-gray-500 uppercase">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="widget.dashboardData.recent_projects">
+                                            <t t-foreach="widget.dashboardData.recent_projects" t-as="project">
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex px-3 py-1">
+                                                            <div class="d-flex flex-column justify-content-center">
+                                                                <h6 class="mb-0 text-sm" t-esc="project.name"/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="progress-wrapper w-75 mx-auto">
+                                                            <div class="progress-info">
+                                                                <div class="progress-percentage">
+                                                                    <span class="text-xs font-weight-bold"
+                                                                          t-esc="project.progress + '%'"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-gradient-info"
+                                                                     t-att-style="'width: ' + project.progress + '%'"
+                                                                     role="progressbar"
+                                                                     t-att-aria-valuenow="project.progress"
+                                                                     aria-valuemin="0" aria-valuemax="100"/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold" t-esc="project.tasks"/>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold" t-esc="project.hours"/>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span t-att-class="'badge badge-sm ' + project.status_class"
+                                                              t-esc="project.status"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--<templates id="template" xml:space="preserve">-->
+        <!--    <t t-name="ProjectDashboard">-->
+        <!--        <div class="project-dashboard container-fluid py-4">-->
+        <!--            &lt;!&ndash; Summary Cards Row &ndash;&gt;-->
+        <!--            <div class="row mb-4">-->
+        <!--                <div class="col-xl-3 col-sm-6 mb-4">-->
+        <!--                    <div class="card">-->
+        <!--                        <div class="card-body p-3">-->
+        <!--                            <div class="row">-->
+        <!--                                <div class="col-8">-->
+        <!--                                    <div class="numbers">-->
+        <!--                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Projects</p>-->
+        <!--                                        <h5 class="font-weight-bolder">-->
+        <!--                                            <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.total_projects : 0"/>-->
+        <!--                                        </h5>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                                <div class="col-4 text-end">-->
+        <!--                                    <div class="icon icon-shape bg-primary shadow">-->
+        <!--                                        <i class="fas fa-project-diagram"></i>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+
+        <!--                <div class="col-xl-3 col-sm-6 mb-4">-->
+        <!--                    <div class="card">-->
+        <!--                        <div class="card-body p-3">-->
+        <!--                            <div class="row">-->
+        <!--                                <div class="col-8">-->
+        <!--                                    <div class="numbers">-->
+        <!--                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Active Tasks</p>-->
+        <!--                                        <h5 class="font-weight-bolder">-->
+        <!--                                            <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.active_tasks : 0"/>-->
+        <!--                                        </h5>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                                <div class="col-4 text-end">-->
+        <!--                                    <div class="icon icon-shape bg-success shadow">-->
+        <!--                                        <i class="fas fa-tasks"></i>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+
+        <!--                <div class="col-xl-3 col-sm-6 mb-4">-->
+        <!--                    <div class="card">-->
+        <!--                        <div class="card-body p-3">-->
+        <!--                            <div class="row">-->
+        <!--                                <div class="col-8">-->
+        <!--                                    <div class="numbers">-->
+        <!--                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Hours</p>-->
+        <!--                                        <h5 class="font-weight-bolder">-->
+        <!--                                            <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.total_hours : 0"/>-->
+        <!--                                        </h5>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                                <div class="col-4 text-end">-->
+        <!--                                    <div class="icon icon-shape bg-warning shadow">-->
+        <!--                                        <i class="fas fa-clock"></i>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+
+        <!--                <div class="col-xl-3 col-sm-6 mb-4">-->
+        <!--                    <div class="card">-->
+        <!--                        <div class="card-body p-3">-->
+        <!--                            <div class="row">-->
+        <!--                                <div class="col-8">-->
+        <!--                                    <div class="numbers">-->
+        <!--                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">Team Members</p>-->
+        <!--                                        <h5 class="font-weight-bolder">-->
+        <!--                                            <t t-esc="widget.dashboardData.summary ? widget.dashboardData.summary.team_members : 0"/>-->
+        <!--                                        </h5>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                                <div class="col-4 text-end">-->
+        <!--                                    <div class="icon icon-shape bg-info shadow">-->
+        <!--                                        <i class="fas fa-users"></i>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+
+        <!--            &lt;!&ndash; Charts Row &ndash;&gt;-->
+        <!--            <div class="row mb-4">-->
+        <!--                <div class="col-lg-6 mb-4">-->
+        <!--                    <div class="card h-100">-->
+        <!--                        <div class="card-header">-->
+        <!--                            <h6 class="mb-0">Developer Utilization</h6>-->
+        <!--                        </div>-->
+        <!--                        <div class="card-body">-->
+        <!--                            <canvas id="developerUtilizationChart"></canvas>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="col-lg-6 mb-4">-->
+        <!--                    <div class="card h-100">-->
+        <!--                        <div class="card-header">-->
+        <!--                            <h6 class="mb-0">Task Completion</h6>-->
+        <!--                        </div>-->
+        <!--                        <div class="card-body">-->
+        <!--                            <canvas id="taskCompletionChart"></canvas>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+
+        <!--            &lt;!&ndash; Recent Projects Table &ndash;&gt;-->
+        <!--            <div class="row">-->
+        <!--                <div class="col-12">-->
+        <!--                    <div class="card">-->
+        <!--                        <div class="card-header">-->
+        <!--                            <h6 class="mb-0">Recent Projects</h6>-->
+        <!--                        </div>-->
+        <!--                        <div class="card-body px-0 pt-0 pb-2">-->
+        <!--                            <div class="table-responsive p-0">-->
+        <!--                                <table class="table align-items-center mb-0">-->
+        <!--                                    <thead>-->
+        <!--                                        <tr>-->
+        <!--                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Project Name</th>-->
+        <!--                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Progress</th>-->
+        <!--                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tasks</th>-->
+        <!--                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hours</th>-->
+        <!--                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>-->
+        <!--                                        </tr>-->
+        <!--                                    </thead>-->
+        <!--                                    <tbody>-->
+        <!--                                        <t t-if="widget.dashboardData.recent_projects">-->
+        <!--                                            <t t-foreach="widget.dashboardData.recent_projects" t-as="project">-->
+        <!--                                                <tr>-->
+        <!--                                                    <td>-->
+        <!--                                                        <div class="d-flex px-3 py-1">-->
+        <!--                                                            <div class="d-flex flex-column justify-content-center">-->
+        <!--                                                                <h6 class="mb-0 text-sm" t-esc="project.name"/>-->
+        <!--                                                            </div>-->
+        <!--                                                        </div>-->
+        <!--                                                    </td>-->
+        <!--                                                    <td>-->
+        <!--                                                        <div class="progress-wrapper w-75 mx-auto">-->
+        <!--                                                            <div class="progress-info">-->
+        <!--                                                                <div class="progress-percentage">-->
+        <!--                                                                    <span class="text-xs font-weight-bold" t-esc="project.progress + '%'"/>-->
+        <!--                                                                </div>-->
+        <!--                                                            </div>-->
+        <!--                                                            <div class="progress">-->
+        <!--                                                                <div class="progress-bar bg-gradient-info" t-att-style="'width: ' + project.progress + '%'" role="progressbar" t-att-aria-valuenow="project.progress" aria-valuemin="0" aria-valuemax="100"/>-->
+        <!--                                                            </div>-->
+        <!--                                                        </div>-->
+        <!--                                                    </td>-->
+        <!--                                                    <td class="align-middle text-center text-sm">-->
+        <!--                                                        <span class="text-xs font-weight-bold" t-esc="project.tasks"/>-->
+        <!--                                                    </td>-->
+        <!--                                                    <td class="align-middle text-center text-sm">-->
+        <!--                                                        <span class="text-xs font-weight-bold" t-esc="project.hours"/>-->
+        <!--                                                    </td>-->
+        <!--                                                    <td class="align-middle text-center text-sm">-->
+        <!--                                                        <span t-att-class="'badge badge-sm ' + project.status_class" t-esc="project.status"/>-->
+        <!--                                                    </td>-->
+        <!--                                                </tr>-->
+        <!--                                            </t>-->
+        <!--                                        </t>-->
+        <!--                                    </tbody>-->
+        <!--                                </table>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </t>-->
+        <!--</templates>-->
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+
+
+        <!--<templates id="template" xml:space="preserve">-->
+        <!--    <t t-name="ProjectDashboard">-->
+        <!--        <div class="oh_dashboards" style="margin-top: 20px; overflow-y: scroll; vertical-align: middle; overflow-x: clip; max-height: -webkit-fill-available;">-->
+        <!--            <div class="container-fluid o_pj_dashboard" style="margin-left:4%;">-->
+        <!--                <div class="row main-section">-->
+        <!--                    &lt;!&ndash; Summary Cards Section &ndash;&gt;-->
+        <!--                    <div class="col-lg-12">-->
+        <!--                        <div class="row dashboard_cards">-->
+        <!--                            <div class="col-lg-3 col-sm-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <div class="row">-->
+        <!--                                            <div class="col-8">-->
+        <!--                                                <h5>Total Projects</h5>-->
+        <!--                                                <h2 t-out="total_projects"/>-->
+        <!--                                            </div>-->
+        <!--                                            <div class="col-4 text-right">-->
+        <!--                                                <i class="fa fa-folder-open fa-3x text-primary"/>-->
+        <!--                                            </div>-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="col-lg-3 col-sm-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <div class="row">-->
+        <!--                                            <div class="col-8">-->
+        <!--                                                <h5>Active Tasks</h5>-->
+        <!--                                                <h2 t-out="active_tasks"/>-->
+        <!--                                            </div>-->
+        <!--                                            <div class="col-4 text-right">-->
+        <!--                                                <i class="fa fa-tasks fa-3x text-success"/>-->
+        <!--                                            </div>-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="col-lg-3 col-sm-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <div class="row">-->
+        <!--                                            <div class="col-8">-->
+        <!--                                                <h5>Total Hours</h5>-->
+        <!--                                                <h2 t-out="total_hours"/>-->
+        <!--                                            </div>-->
+        <!--                                            <div class="col-4 text-right">-->
+        <!--                                                <i class="fa fa-clock fa-3x text-warning"/>-->
+        <!--                                            </div>-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="col-lg-3 col-sm-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <div class="row">-->
+        <!--                                            <div class="col-8">-->
+        <!--                                                <h5>Team Members</h5>-->
+        <!--                                                <h2 t-out="team_members"/>-->
+        <!--                                            </div>-->
+        <!--                                            <div class="col-4 text-right">-->
+        <!--                                                <i class="fa fa-users fa-3x text-info"/>-->
+        <!--                                            </div>-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+
+        <!--                    &lt;!&ndash; Charts Section &ndash;&gt;-->
+        <!--                    <div class="col-lg-12">-->
+        <!--                        <div class="row mt-4">-->
+        <!--                            &lt;!&ndash; Developer Utilization Chart &ndash;&gt;-->
+        <!--                            <div class="col-lg-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <h4 class="card-title">Developer Utilization</h4>-->
+        <!--                                        <canvas id="developerUtilizationChart" height="300"/>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            &lt;!&ndash; Task Completion Chart &ndash;&gt;-->
+        <!--                            <div class="col-lg-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <h4 class="card-title">Task Completion</h4>-->
+        <!--                                        <canvas id="taskCompletionChart" height="300"/>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+
+        <!--                        <div class="row mt-4">-->
+        <!--                            &lt;!&ndash; Project Progress Chart &ndash;&gt;-->
+        <!--                            <div class="col-lg-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <h4 class="card-title">Project Progress</h4>-->
+        <!--                                        <canvas id="projectProgressChart" height="300"/>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            &lt;!&ndash; Timesheet Compliance Chart &ndash;&gt;-->
+        <!--                            <div class="col-lg-6">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <h4 class="card-title">Timesheet Compliance</h4>-->
+        <!--                                        <canvas id="timesheetComplianceChart" height="300"/>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+
+        <!--                    &lt;!&ndash; Project List Section &ndash;&gt;-->
+        <!--                    <div class="col-lg-12">-->
+        <!--                        <div class="row mt-4">-->
+        <!--                            <div class="col-lg-12">-->
+        <!--                                <div class="card oh-card">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <h4 class="card-title">Recent Projects</h4>-->
+        <!--                                        <div class="table-responsive">-->
+        <!--                                            <table class="table table-hover">-->
+        <!--                                                <thead>-->
+        <!--                                                    <tr>-->
+        <!--                                                        <th>Project Name</th>-->
+        <!--                                                        <th>Progress</th>-->
+        <!--                                                        <th>Tasks</th>-->
+        <!--                                                        <th>Hours</th>-->
+        <!--                                                        <th>Status</th>-->
+        <!--                                                    </tr>-->
+        <!--                                                </thead>-->
+        <!--                                                <tbody class="project_table">-->
+        <!--                                                    <t t-foreach="projects" t-as="project">-->
+        <!--                                                        <tr>-->
+        <!--                                                            <td><t t-esc="project.name"/></td>-->
+        <!--                                                            <td>-->
+        <!--                                                                <div class="progress">-->
+        <!--                                                                    <div class="progress-bar" role="progressbar" t-att-style="'width: ' + project.progress + '%'" t-att-aria-valuenow="project.progress" aria-valuemin="0" aria-valuemax="100">-->
+        <!--                                                                        <t t-esc="project.progress"/>%-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+        <!--                                                            </td>-->
+        <!--                                                            <td><t t-esc="project.tasks"/></td>-->
+        <!--                                                            <td><t t-esc="project.hours"/></td>-->
+        <!--                                                            <td><span t-att-class="'badge ' + project.status_class"><t t-esc="project.status"/></span></td>-->
+        <!--                                                        </tr>-->
+        <!--                                                    </t>-->
+        <!--                                                </tbody>-->
+        <!--                                            </table>-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </t>-->
+        <!--</templates>-->

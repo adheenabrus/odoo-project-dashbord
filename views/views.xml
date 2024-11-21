@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+
+    <!-- Extend the form view -->
+    <record id="view_task_form2_inherited" model="ir.ui.view">
+        <field name="name">project.task.form.inherited</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <!-- Add new notebook page for task tracking -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Task Tracking" name="task_tracking">
+                    <group>
+                        <group string="Time Management">
+                            <field name="task_start_date"/>
+                            <field name="task_end_date"/>
+<!--                            <field name="estimated_hours"/>-->
+                            <field name="actual_hours"/>
+                            <field name="utilization" widget="percentage"/>
+                            <field name="is_overdue"/>
+                        </group>
+                        <group string="Task Details">
+                            <field name="task_type"/>
+                            <field name="is_bug"/>
+                            <field name="bug_reported_date" attrs="{'invisible': [('is_bug', '=', False)]}"/>
+                            <field name="bug_resolution_date" attrs="{'invisible': [('is_bug', '=', False)]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
